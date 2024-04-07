@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Infra\Database;
-enum dbType{
-    case SQLITE;
-    case SQL;
-}
-class DatabaseCreator{
-    
+
+class DatabaseCreator
+{
+    const SQLITE = 'sqlite';
+    const SQL = 'sql';
     private \PDO $connection;
-    public function __construct(private dbType $dbType){
+    public function __construct(private string $dbType)
+    {
         $this->connection = DatabaseManager::getInstance();
     }
-    public function down(){
+    public function down()
+    {
         $sql = 'DROP TABLE IF EXISTS trecho_voo;
                 DROP TABLE IF EXISTS trecho;
                 DROP TABLE IF EXISTS voo;
@@ -23,9 +24,10 @@ class DatabaseCreator{
         ';
         $this->connection->exec($sql);
     }
-    public function up(){
+    public function up()
+    {
         $this->down();
-        try{
+        try {
             $this->createTableUsuario();
             $this->createTableAeronave();
             $this->createTableCiaAerea();
@@ -34,12 +36,13 @@ class DatabaseCreator{
             $this->createTableVoo();
             $this->createTableTrecho();
             $this->createTableTrechoVoo();
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             echo "Erro ao criar tabelas do banco de dados: " . $e->getMessage() . $e->getTraceAsString();
         }
         return;
     }
-    private function createTableUsuario(){
+    private function createTableUsuario()
+    {
         $sql = "DROP TABLE IF EXISTS usuario;
             CREATE TABLE usuario (
             id INTEGER PRIMARY KEY,
@@ -54,9 +57,10 @@ class DatabaseCreator{
             uf CHAR(2),
             data_hora_cadastro DATE
         );";
-    $this->connection->exec($sql);
+        $this->connection->exec($sql);
     }
-    private function createTablePassagem(){
+    private function createTablePassagem()
+    {
         $sql = "CREATE TABLE passagem (
             id INTEGER PRIMARY KEY,
             id_usuario_comprador INTEGER,
@@ -65,16 +69,16 @@ class DatabaseCreator{
             id_passageiro INTEGER,
             id_cia_aerea INTEGER,
             data_compra DATE";
-        
-            if($this->dbType == dbType::SQLITE){
-                $sql .=  ',
+
+        if ($this->dbType == self::SQLITE) {
+            $sql .=  ',
                 FOREIGN KEY (id_cia_aerea) REFERENCES cia_aerea(id),
                 FOREIGN KEY (id_usuario_comprador) REFERENCES usuario(id),
                 FOREIGN KEY (id_passageiro) REFERENCES passageiro(id)
             );
                 ';
-            } else{
-                $sql .= ');
+        } else {
+            $sql .= ');
          
                 ALTER TABLE passagem ADD CONSTRAINT FK_passagem_2
                     FOREIGN KEY (id_cia_aerea)
@@ -88,11 +92,12 @@ class DatabaseCreator{
                 ALTER TABLE passagem ADD CONSTRAINT FK_passagem_4
                     FOREIGN KEY (id_passageiro)
                     REFERENCES passageiro (id);';
-            }
-        
+        }
+
         $this->connection->exec($sql);
     }
-    private function createTableCiaAerea(){
+    private function createTableCiaAerea()
+    {
         $sql = "CREATE TABLE cia_aerea (
             id INTEGER PRIMARY KEY,
             cnpj CHAR(14),
@@ -103,7 +108,8 @@ class DatabaseCreator{
         );";
         $this->connection->exec($sql);
     }
-    private function createTablePassageiro(){
+    private function createTablePassageiro()
+    {
         $sql = "CREATE TABLE passageiro (
             id INTEGER PRIMARY KEY,
             nome VARCHAR(80),
@@ -114,7 +120,8 @@ class DatabaseCreator{
         );";
         $this->connection->exec($sql);
     }
-    private function createTableAeronave(){
+    private function createTableAeronave()
+    {
         $sql = "CREATE TABLE aeronave (
             id INTEGER PRIMARY KEY,
             sigla CHAR(4),
@@ -128,7 +135,8 @@ class DatabaseCreator{
         );";
         $this->connection->exec($sql);
     }
-    private function createTableVoo(){
+    private function createTableVoo()
+    {
         $sql = "CREATE TABLE voo (
             id INTEGER PRIMARY KEY,
             id_aeronave INTEGER,
@@ -139,13 +147,12 @@ class DatabaseCreator{
             data_hora_saida DATE,
             data_hora_chegada DATE,
             tempo_voo INTEGER";
-        if($this->dbType == dbType::SQLITE){
+        if ($this->dbType == self::SQLITE) {
             $sql .= ',
             FOREIGN KEY (id_aeronave) REFERENCES aeronave(id),
             FOREIGN KEY (id_companhia) REFERENCES cia_aerea(id)
         );';
-
-        } else{
+        } else {
             $sql .= '
         );
          
@@ -159,7 +166,8 @@ class DatabaseCreator{
         }
         $this->connection->exec($sql);
     }
-    private function createTableTrecho(){
+    private function createTableTrecho()
+    {
         $sql = "CREATE TABLE trecho (
             id INTEGER PRIMARY KEY,
             id_passagem INTEGER,
@@ -167,11 +175,11 @@ class DatabaseCreator{
         
         ";
 
-        if($this->dbType == dbType::SQLITE){
+        if ($this->dbType == self::SQLITE) {
             $sql .= ',
             FOREIGN KEY (id_passagem) REFERENCES passagem(id)
         );';
-        } else{
+        } else {
             $sql .= ');
          
             ALTER TABLE trecho ADD CONSTRAINT FK_trecho_2
@@ -180,22 +188,23 @@ class DatabaseCreator{
         }
         $this->connection->exec($sql);
     }
-    private function createTableTrechoVoo(){
+    private function createTableTrechoVoo()
+    {
         $sql = "CREATE TABLE trecho_voo (
             id_trecho INTEGER,
             id_voo INTEGER,
             id INTEGER PRIMARY KEY,
             UNIQUE (id_voo, id_trecho)
         ";
-        
 
-            if($this->dbType == dbType::SQLITE){
-                $sql .= ',
+
+        if ($this->dbType == self::SQLITE) {
+            $sql .= ',
                 FOREIGN KEY (id_trecho) REFERENCES trecho(id),
                 FOREIGN KEY (id_voo) REFERENCES voo(id)
             );';
-            } else{
-                $sql .= ');
+        } else {
+            $sql .= ');
          
                 ALTER TABLE trecho_voo ADD CONSTRAINT FK_trecho_voo_1
                     FOREIGN KEY (id_trecho)
@@ -206,9 +215,7 @@ class DatabaseCreator{
                     FOREIGN KEY (id_voo)
                     REFERENCES voo (id)
                     ON DELETE RESTRICT;';
-            }
+        }
         $this->connection->exec($sql);
     }
-
-
 }
