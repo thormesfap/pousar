@@ -20,7 +20,7 @@ try {
     $creator->up();
 }
 
-$A320 = new Aeronave("A320", 23, 6, 6);
+$A320 = new Aeronave("A320", 23, 3, 6);
 $cia = new CiaAerea("Gol Linhas Aéreas", "12345678963541", "G3");
 $voo = new Voo(1083, "JUA", "GRU", $A320, $cia);
 $voo->setDataHoraSaida(new DateTimeImmutable());
@@ -30,9 +30,12 @@ $user->setCpf("12345678912")->setTelefone("88997711335")->setLogradouro("São Mi
 $passageiro = new Passageiro($user->getNome(), $user->getCpf(), $user->getTelefone());
 $passageiro2 = new Passageiro("Passageiro 2", "78945612312", "123456783");
 $passagem = $user->comprarPassagem(577.99, $passageiro, [$voo], $cia);
-$passagem = $user->comprarPassagem(585.99, $passageiro2, [$voo], $cia);
-$user->marcarAssento($passageiro, "5D", $passagem->getTrechos()[0]);
-$user->marcarAssento($passageiro2, "23F", $passagem->getTrechos()[0]);
+$passagem2 = $user->comprarPassagem(585.99, $passageiro2, [$voo], $cia);
+$user->marcarAssento($passageiro, "5C", $passagem->getTrechos()[0]);
+$user->marcarAssento($passageiro2, "5B", $passagem->getTrechos()[0]);
+
+
+
 echo "Vôo saindo de {$voo->getCodigoOrigem()} para {$voo->getCodigoDestino()}, no dia {$voo->getDataHoraSaida()->format('d/m/Y')} com {$voo->getQuantidadeAssentosDisponiveis()} assentos disponíveis e {$voo->getQuantidadeAssentosOcupados()} assentos ocupados\n";
 echo "Assentos Disponíveis\n";
 foreach ($voo->getAssentosDisponiveis() as $disponivel) {

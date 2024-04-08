@@ -95,12 +95,12 @@ class Voo
         $this->assentos[$index]->setPassageiro($passageiro);
     }
 
-    public function desocuparAssento(string $codigo, Passageiro $passageiro): void
+    public function desocuparAssento(Passageiro $passageiro): void
     {
-        $index = $this->getIndexAssento($codigo);
-        $assento = $this->assentos[$index];
-        if ($assento->getPassageiro()->getCpf() !== $passageiro->getCpf()) {
-            throw new \ValueError("Assento não pertence ao passageiro!");
+        $index = $this->getIndexAssentoPassageiro($passageiro);
+        if($index == -1){
+            //Passageiro ainda não marcou a passagem
+            return;
         }
         $this->assentos[$index]->desocupar();
     }

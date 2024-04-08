@@ -2,7 +2,8 @@
 
 namespace App\Entities;
 
-class Trecho{
+class Trecho
+{
     private Assento $assento;
     private Voo $voo;
     private Passagem $passagem;
@@ -13,7 +14,13 @@ class Trecho{
         $this->passagem = $passagem;
     }
 
-    public function marcarAssento(string $codigo, Passageiro $passageiro){
+    public function marcarAssento(string $codigo, Passageiro $passageiro)
+    {
         $this->voo->ocuparAssento($codigo, $passageiro);
+    }
+
+    public function desmarcarAssento(Passageiro $passageiro)
+    {
+        $this->voo->desocuparAssento($passageiro);
     }
 }

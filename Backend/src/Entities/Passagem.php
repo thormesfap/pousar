@@ -35,6 +35,4 @@ class Passagem{
     public function getCiaAerea(){
         return $this->ciaAerea;
     }
-
-
 }
