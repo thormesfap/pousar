@@ -30,4 +30,11 @@ class Aeronave{
         return $assentos;
     }
 
+    public function getAssentosFila(){
+        return $this->assentosPorFila;
+    }
+    public function getQuantidadeFilas(){
+        return $this->qteFileiras;
+    }
+
 }

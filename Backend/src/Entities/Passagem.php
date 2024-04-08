@@ -6,11 +6,15 @@ class Passagem{
     private float $valor;
     private Passageiro $passageiro;
     private array $trechos;
+    private CiaAerea $ciaAerea;
+    private Usuario $comprador;
 
-    public function __construct(float $valor, Passageiro $passageiro)
+    public function __construct(Usuario $comprador, float $valor, Passageiro $passageiro, CiaAerea $ciaAerea)
     {
         $this->valor = $valor;
         $this->passageiro = $passageiro;
+        $this->ciaAerea = $ciaAerea;
+        $this->comprador = $comprador;
         $this->trechos = [];
     }
 
@@ -27,6 +31,9 @@ class Passagem{
     }
     public function addTrecho(Trecho $trecho){
         $this->trechos[] = $trecho;
+    }
+    public function getCiaAerea(){
+        return $this->ciaAerea;
     }
 
 

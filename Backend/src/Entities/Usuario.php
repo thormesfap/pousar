@@ -105,12 +105,12 @@ class Usuario extends Pessoa
         return $this;
     }
 
-    public function comprarPassagem(float $valor, Passageiro $passageiro, array $voos): Passagem
+    public function comprarPassagem(float $valor, Passageiro $passageiro, array $voos, CiaAerea $ciaAerea): Passagem
     {
 
-        $passagem = new Passagem($valor, $passageiro);
+        $passagem = new Passagem($this, $valor, $passageiro, $ciaAerea);
         foreach ($voos as $voo) {
-            $trecho = new Trecho($voo);
+            $trecho = new Trecho($voo, $passagem);
             $passagem->addTrecho($trecho);
         }
         return $passagem;

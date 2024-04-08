@@ -10,20 +10,25 @@ class Voo
     private \DateTimeImmutable $dataHoraSaida;
     private \DateTimeImmutable $dataHoraChegada;
     private Aeronave $aeronave;
+    private CiaAerea $ciaAerea;
     private array $assentos;
 
-    public function __construct(int $numero, string $codOrigem, string $codDestino, Aeronave $aeronave)
+    public function __construct(int $numero, string $codOrigem, string $codDestino, Aeronave $aeronave, CiaAerea $ciaAerea)
     {
         $this->numero = $numero;
         $this->codOrigem = $codOrigem;
         $this->codDestino = $codDestino;
         $this->aeronave = $aeronave;
+        $this->ciaAerea = $ciaAerea;
         $this->assentos = $aeronave->gerarAssentos();
     }
 
     public function getNumero()
     {
         return $this->numero;
+    }
+    public function getCiaAerea(){
+        return $this->ciaAerea;
     }
 
     public function setDataHoraSaida(\DateTimeImmutable $date)
@@ -82,6 +87,10 @@ class Voo
         if ($this->assentos[$index]->estaOcupado()) {
             throw new \ValueError("Assento já está ocupado");
         }
+        $indexAssentoExistente = $this->getIndexAssentoPassageiro($passageiro);
+        if($indexAssentoExistente > -1){
+            $this->assentos[$indexAssentoExistente]->desocupar();
+        }
         $this->assentos[$index]->ocupar();
         $this->assentos[$index]->setPassageiro($passageiro);
     }
@@ -90,10 +99,21 @@ class Voo
     {
         $index = $this->getIndexAssento($codigo);
         $assento = $this->assentos[$index];
-        if ($assento->getPassageiro()->getCpf() == $passageiro->getCpf()) {
-            $this->assentos[$index]->desocupar();
+        if ($assento->getPassageiro()->getCpf() !== $passageiro->getCpf()) {
+            throw new \ValueError("Assento não pertence ao passageiro!");
         }
-        throw new \ValueError("Assento não pertence ao passageiro!");
+        $this->assentos[$index]->desocupar();
+    }
+
+    private function getIndexAssentoPassageiro(Passageiro $passageiro){
+        $index = -1;
+        for ($i = 0; $i < count($this->assentos); $i++) {
+            if ($this->assentos[$i]->getPassageiro()?->getCpf() == $passageiro->getCpf()) {
+                $index = $i;
+                $i = count($this->assentos);
+            }
+        }
+        return $index;
     }
 
     private function getIndexAssento(string $codigo): int
@@ -106,8 +126,28 @@ class Voo
             }
         }
         if ($index < 0) {
-            throw new \ValueError("Não foi encontrado assento com o código informado");
+            throw new \ValueError("Não foi encontrado assento com o código informado '$codigo'");
         }
         return $index;
+    }
+
+    public function printMapa(){
+        $count = 0;
+        $assentos = $this->aeronave->getAssentosFila();
+        echo "Mapa de Assentos do voo {$this->numero} operado por {$this->ciaAerea->getRazaoSocial()}";
+        foreach($this->assentos as $assento){
+            if($count % $assentos == 0){
+                echo "\n";
+            }
+            if(($count % ($assentos / 2)) == 0 && ($count % ($assentos)) !== 0){
+                echo "\t";
+            }
+            if($assento->estaOcupado()){
+                echo "\033[01;31m{$assento->getCodigo()}\033[0m ";
+            } else{
+                echo "\033[01;32m{$assento->getCodigo()}\033[0m ";
+            }
+            $count++;
+        }
     }
 }

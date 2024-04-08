@@ -5,7 +5,7 @@ namespace App\Entities;
 class Assento{
     private string $codigo;
     private bool $ocupado;
-    private Passageiro $passageiro;
+    private ?Passageiro $passageiro;
 
     public function __construct(string $codigo)
     {
@@ -24,6 +24,7 @@ class Assento{
 
     public function desocupar():self{
         $this->ocupado = false;
+        $this->passageiro = null;
         return $this;
     }
     

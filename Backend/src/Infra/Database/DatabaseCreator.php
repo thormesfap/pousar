@@ -65,7 +65,6 @@ class DatabaseCreator
             id INTEGER PRIMARY KEY,
             id_usuario_comprador INTEGER,
             valor DECIMAL(7,2),
-            id_companhia INTEGER,
             id_passageiro INTEGER,
             id_cia_aerea INTEGER,
             data_compra DATE";
