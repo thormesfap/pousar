@@ -134,7 +134,7 @@ class Voo
     public function printMapa(){
         $count = 0;
         $assentos = $this->aeronave->getAssentosFila();
-        echo "Mapa de Assentos do voo {$this->numero} operado por {$this->ciaAerea->getRazaoSocial()}";
+        echo "Mapa de Assentos do voo {$this->numero} operado por {$this->ciaAerea->getRazaoSocial()} em um avião {$this->aeronave->getSigla()} {$this->aeronave->getMarca()}";
         foreach($this->assentos as $assento){
             if($count % $assentos == 0){
                 echo "\n";

@@ -8,10 +8,12 @@ class Aeronave{
     private int $qteFileiras;
     private int $assentosPorFila;
     private int $assentosPrioritarios;
+    private string $marca;
 
-    public function __construct(string $sigla, int $qteFileiras, int $assentosPorFila, int $assentosPrioritarios)
+    public function __construct(string $sigla, string $marca, int $qteFileiras, int $assentosPorFila, int $assentosPrioritarios)
     {
         $this->sigla = $sigla;
+        $this->marca = $marca;
         $this->qteFileiras = $qteFileiras;
         $this->qteAssentos = $qteFileiras * $assentosPorFila;
         $this->assentosPorFila = $assentosPorFila;
@@ -35,6 +37,12 @@ class Aeronave{
     }
     public function getQuantidadeFilas(){
         return $this->qteFileiras;
+    }
+    public function getSigla(){
+        return $this->sigla;
+    }
+    public function getMarca(){
+        return $this->marca;
     }
 
 }
