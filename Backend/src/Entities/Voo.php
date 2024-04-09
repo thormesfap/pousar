@@ -91,8 +91,7 @@ class Voo
         if($indexAssentoExistente > -1){
             $this->assentos[$indexAssentoExistente]->desocupar();
         }
-        $this->assentos[$index]->ocupar();
-        $this->assentos[$index]->setPassageiro($passageiro);
+        $this->assentos[$index]->ocupar($passageiro);
     }
 
     public function desocuparAssento(Passageiro $passageiro): void

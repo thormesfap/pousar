@@ -115,11 +115,4 @@ class Usuario extends Pessoa
         }
         return $passagem;
     }
-
-    public function marcarAssento(Passageiro $passageiro, $codigoAssento, Trecho $trecho){
-        $trecho->marcarAssento($codigoAssento, $passageiro);
-    }
-    public function desmarcarAssento(Passageiro $passageiro, Trecho $trecho){
-        $trecho->desmarcarAssento($passageiro);
-    }
 }
