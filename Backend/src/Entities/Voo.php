@@ -85,6 +85,7 @@ class Voo
     {
         $index = $this->getIndexAssento($codigo);
         if ($this->assentos[$index]->estaOcupado()) {
+            // Lança erro caso o assento esteja ocupado
             throw new \ValueError("Assento já está ocupado");
         }
         $indexAssentoExistente = $this->getIndexAssentoPassageiro($passageiro);
@@ -103,6 +104,7 @@ class Voo
         }
         $this->assentos[$index]->desocupar();
     }
+
     // Procurar o indice do assento a partir do passageiro
     private function getIndexAssentoPassageiro(Passageiro $passageiro){
         $index = -1;
@@ -114,6 +116,7 @@ class Voo
         }
         return $index;
     }
+
     // Procurar o indice do assento pelo código informado
     private function getIndexAssento(string $codigo): int
     {
@@ -129,6 +132,7 @@ class Voo
         }
         return $index;
     }
+
     // Imprime o mapa de assentos do vôo, com detalhamento dos assentos ocupados (vermelho) e disponíveis (verde)
     public function printMapa(){
         $count = 0;
@@ -138,7 +142,7 @@ class Voo
             if($count % $assentos == 0){
                 echo "\n";
             }
-            if(($count % ($assentos / 2)) == 0 && ($count % ($assentos)) !== 0){
+            if(($count % (int)($assentos / 2)) == 0 && ($count % ($assentos)) !== 0){
                 echo "\t";
             }
             if($assento->estaOcupado()){

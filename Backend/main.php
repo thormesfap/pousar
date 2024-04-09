@@ -10,7 +10,6 @@ use App\Infra\Database\DatabaseCreator;
 use App\Infra\Database\DatabaseManager;
 
 require 'autoloader.php';
-error_reporting(E_ALL & ~E_DEPRECATED);
 
 // $db = DatabaseManager::getInstance();
 // try {
@@ -25,10 +24,10 @@ $cia = new CiaAerea("Gol Linhas Aéreas", "12345678963541", "G3");
 $voo = new Voo(1083, "JUA", "GRU", $A320, $cia);
 $voo->setDataHoraSaida(new DateTimeImmutable());
 $voo->setDataHoraChegada((DateTimeImmutable::createFromInterface(new DateTime())->add(new \DateInterval("PT3H"))));
-$user = new Usuario("anon@anon.com", "Hans Christian");
+$user = new Usuario("anon@anon.com", "Antonio Pedro");
 $user->setCpf("12345678912")->setTelefone("88997711335")->setLogradouro("São Miguel");
 $passageiro = new Passageiro($user->getNome(), $user->getCpf(), $user->getTelefone());
-$passageiro2 = new Passageiro("Daniel Galvão", "78945612312", "123456783");
+$passageiro2 = new Passageiro("Pedro Antônio", "78945612312", "123456783");
 $passagem = $user->comprarPassagem(577.99, $passageiro, [$voo], $cia);
 $passagem2 = $user->comprarPassagem(585.99, $passageiro2, [$voo], $cia);
 $passageiro->marcarAssento("5C", $passagem->getTrechos()[0]);
