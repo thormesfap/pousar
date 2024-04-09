@@ -113,6 +113,7 @@ class Usuario extends Pessoa
             $trecho = new Trecho($voo, $passagem);
             $passagem->addTrecho($trecho);
         }
+        echo "Passagem comprada para {$passageiro->getNome()} no valor de R$ " . number_format($valor,2,",",".") . " de " . $voos[0]->getCodigoOrigem() . " para " . end($voos)->getCodigoDestino() . "\n";
         return $passagem;
     }
 }

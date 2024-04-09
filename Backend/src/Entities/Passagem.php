@@ -29,6 +29,8 @@ class Passagem{
     public function getTrechos(): array{
         return $this->trechos;
     }
+
+    //Adiciona cada trechos
     public function addTrecho(Trecho $trecho){
         $this->trechos[] = $trecho;
     }

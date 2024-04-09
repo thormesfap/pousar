@@ -19,7 +19,7 @@ class Aeronave{
         $this->assentosPorFila = $assentosPorFila;
         $this->assentosPrioritarios = $assentosPrioritarios;
     }
-
+    //Método para gerar assentos de acordo com a quantidade de fileiras e assentos por fila
     public function gerarAssentos(): array{
         $assentos = [];
         for($i = 1; $i <= $this->qteFileiras; $i++){

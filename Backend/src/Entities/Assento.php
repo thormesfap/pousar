@@ -16,7 +16,7 @@ class Assento{
     public function getCodigo(): string{
         return $this->codigo;
     }
-
+    
     public function ocupar(Passageiro $passageiro): self{
         $this->ocupado = true;
         $this->passageiro = $passageiro;

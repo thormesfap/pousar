@@ -62,12 +62,12 @@ class Voo
     {
         return $this->assentos;
     }
-
+    // filtra assentos que não estão ocupados
     public function getAssentosDisponiveis(): array
     {
         return array_filter($this->assentos, fn (Assento $assento) => !$assento->estaOcupado());
     }
-
+    // filtra assentos que estão ocupados
     public function getAssentosOcupados(): array
     {
         return array_filter($this->assentos, fn (Assento $assento) => $assento->estaOcupado());
@@ -103,7 +103,7 @@ class Voo
         }
         $this->assentos[$index]->desocupar();
     }
-
+    // Procurar o indice do assento a partir do passageiro
     private function getIndexAssentoPassageiro(Passageiro $passageiro){
         $index = -1;
         for ($i = 0; $i < count($this->assentos); $i++) {
@@ -114,7 +114,7 @@ class Voo
         }
         return $index;
     }
-
+    // Procurar o indice do assento pelo código informado
     private function getIndexAssento(string $codigo): int
     {
         $index = -1;
@@ -129,7 +129,7 @@ class Voo
         }
         return $index;
     }
-
+    // Imprime o mapa de assentos do vôo, com detalhamento dos assentos ocupados (vermelho) e disponíveis (verde)
     public function printMapa(){
         $count = 0;
         $assentos = $this->aeronave->getAssentosFila();
