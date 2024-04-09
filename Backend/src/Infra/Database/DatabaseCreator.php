@@ -21,7 +21,8 @@ class DatabaseCreator
                 DROP TABLE IF EXISTS aeronave;
                 DROP TABLE IF EXISTS cia_aerea;
                 DROP TABLE IF EXISTS usuario;
-                DROP TABLE IF EXISTS busca
+                DROP TABLE IF EXISTS busca;
+                DROP TABLE IF EXISTS forma_pagamento;
         ';
         $this->connection->exec($sql);
     }
@@ -38,6 +39,7 @@ class DatabaseCreator
             $this->createTableTrecho();
             $this->createTableTrechoVoo();
             $this->createTableBuscas();
+            $this->createTablePagamentos();
         } catch (\Exception $e) {
             echo "Erro ao criar tabelas do banco de dados: " . $e->getMessage() . $e->getTraceAsString();
         }
@@ -229,6 +231,14 @@ class DatabaseCreator
             dataSaida DATE,
             dataChegada DATE,
             reservou BOOLEAN
+        );";
+        $this->connection->exec($sql);
+    }
+    private function createTablePagamentos(){
+        $sql = "CREATE TABLE forma_pagamento (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome VARCHAR(50),
+            parcelas INTEGER
         );";
         $this->connection->exec($sql);
     }
