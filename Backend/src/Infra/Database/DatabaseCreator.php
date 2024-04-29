@@ -23,6 +23,8 @@ class DatabaseCreator
                 DROP TABLE IF EXISTS usuario;
                 DROP TABLE IF EXISTS busca;
                 DROP TABLE IF EXISTS forma_pagamento;
+                DROP TABLE IF EXISTS pagamento;
+                DROP TABLE IF EXISTS assinatura;
         ';
         $this->connection->exec($sql);
     }
@@ -39,7 +41,9 @@ class DatabaseCreator
             $this->createTableTrecho();
             $this->createTableTrechoVoo();
             $this->createTableBuscas();
+            $this->createTableAssinaturas();
             $this->createTablePagamentos();
+            $this->createTableFormaPagamentos();
         } catch (\Exception $e) {
             echo "Erro ao criar tabelas do banco de dados: " . $e->getMessage() . $e->getTraceAsString();
         }
@@ -234,12 +238,63 @@ class DatabaseCreator
         );";
         $this->connection->exec($sql);
     }
-    private function createTablePagamentos(){
+    private function createTableFormaPagamentos(){
         $sql = "CREATE TABLE forma_pagamento (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome VARCHAR(50),
             parcelas INTEGER
         );";
+        $this->connection->exec($sql);
+    }
+
+    private function createTableAssinaturas(){
+        $sql = "CREATE TABLE assinatura (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cia_id INTEGER,
+            valor DECIMAL(7,2),
+            validade DATETIME,
+            ativo BOOLEAN
+            ";
+            
+        if ($this->dbType == self::SQLITE) {
+            $sql .= ',
+            FOREIGN KEY (cia_id) REFERENCES cia_aerea(id)
+        );';
+        } else {
+            $sql .= ');
+            ALTER TABLE pagamento ADD CONSTRAINT FK_cia_aerea_2
+                FOREIGN KEY (cia_id)
+                REFERENCES cia (id);
+                ';
+        }
+        echo $sql;
+        $this->connection->exec($sql);
+    }
+    private function createTablePagamentos(){
+        $sql = "CREATE TABLE pagamento (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cia_id INTEGER,
+            valor DECIMAL(7,2),
+            assinatura_id INTEGER
+            ";
+        
+            
+        if ($this->dbType == self::SQLITE) {
+            $sql .= ',
+            FOREIGN KEY (cia_id) REFERENCES cia_aerea(id),
+            FOREIGN KEY (assinatura_id) REFERENCES assinatura(id)
+        );';
+        } else {
+            $sql .= ');
+            ALTER TABLE pagamento ADD CONSTRAINT FK_cia_aerea_2
+                FOREIGN KEY (cia_id)
+                REFERENCES cia (id);
+            ALTER TABLE pagamento ADD CONSTRAINT FK_assinatura
+                FOREIGN KEY (assinatura_id)
+                REFERENCES assinatura (id)
+                ON DELETE RESTRICT;
+                ';
+        }
         $this->connection->exec($sql);
     }
 }

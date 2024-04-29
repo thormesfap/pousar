@@ -11,13 +11,13 @@ use App\Infra\Database\DatabaseManager;
 
 require 'autoloader.php';
 
-// $db = DatabaseManager::getInstance();
-// try {
-//     $db->query('SELECT * FROM usuario');
-// } catch (\PDOException $e) {
-//     $creator = new DatabaseCreator(DatabaseCreator::SQLITE);
-//     $creator->up();
-// }
+$db = DatabaseManager::getInstance();
+try {
+    $db->query('SELECT * FROM usuario');
+} catch (\PDOException $e) {
+    $creator = new DatabaseCreator(DatabaseCreator::SQLITE);
+    $creator->up();
+}
 
 $A320 = new Aeronave("A320","Airbus", 23, 6, 6);
 $cia = new CiaAerea("Gol Linhas Aéreas", "12345678963541", "G3");
