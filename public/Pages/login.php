@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/autoloader.php';
+require_once '../../autoload.php';
 
 ?>
 
@@ -15,15 +15,16 @@ require_once dirname(__DIR__) . '/autoloader.php';
 
 <body>
     <?php
-    include "./Pages/header.php";
+    include "templates/header.php";
     ?>
     <div class="container">
         <h2>Login</h2>
-        <form id="login-form" action="./Routes/login.php" method="POST">
+        <form id="login-form" action="/public/Routes/logar.php" method="POST">
             <input type="text" id="email" name="email" placeholder="Username" required>
             <input type="password" id="senha" name="senha" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+        <a href="cadastro.php">Cadastrar-se</a>
     </div>
 </body>
 

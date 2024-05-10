@@ -2,7 +2,7 @@
 
 use App\Infra\Database\DatabaseManager;
 
-require dirname(__DIR__) . '../../autoloader.php';
+require dirname(__DIR__) . '../../autoload.php';
 
 $conn = DatabaseManager::getConn();
 
@@ -22,7 +22,7 @@ if (count($all) == 0) {
     if ($passou) {
         session_start();
         $_SESSION['user'] = $email;
-        header("Location:cadastro.php");
+        header("Location:/index.php");
     } else {
         echo "Senha errada";
     }

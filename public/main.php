@@ -9,7 +9,7 @@ use App\Entities\Voo;
 use App\Infra\Database\DatabaseCreator;
 use App\Infra\Database\DatabaseManager;
 
-require 'autoloader.php';
+require 'autoload.php';
 
 $db = DatabaseManager::getConn();
 try {

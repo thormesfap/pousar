@@ -3,7 +3,7 @@
 use App\Entities\Usuario;
 use App\Infra\Database\DatabaseManager;
 
-require dirname(__DIR__) . '../../autoloader.php';
+require dirname(__DIR__) . '../../autoload.php';
 
 date_default_timezone_set('America/Sao_Paulo');
 $data = $_POST;
@@ -34,7 +34,7 @@ $stmt->bindValue(9, $user->getMunicipio());
 $stmt->bindValue(10, (new \DateTime())->format("Y-m-d H:i:s"));
 $stmt->execute();
 if ($conn->lastInsertId()) {
-    header('Location:index.php');
+    header('Location:/index.php');
 } else {
     echo "Não foi possível realizar o cadastro do usuário";
 }
