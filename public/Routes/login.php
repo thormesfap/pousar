@@ -1,9 +1,10 @@
 <?php
+
 use App\Infra\Database\DatabaseManager;
 
 require dirname(__DIR__) . '../../autoloader.php';
 
-$conn = DatabaseManager::getInstance();
+$conn = DatabaseManager::getConn();
 
 $data = $_POST;
 
@@ -19,11 +20,10 @@ if (count($all) == 0) {
 } else {
     $passou = password_verify($senha, $all[0]->senha);
     if ($passou) {
+        session_start();
+        $_SESSION['user'] = $email;
         header("Location:cadastro.php");
     } else {
         echo "Senha errada";
     }
 }
-
-
-

@@ -9,7 +9,7 @@ class DatabaseCreator
     private \PDO $connection;
     public function __construct(private string $dbType)
     {
-        $this->connection = DatabaseManager::getInstance();
+        $this->connection = DatabaseManager::getConn();
     }
     public function down()
     {
@@ -238,7 +238,8 @@ class DatabaseCreator
         );";
         $this->connection->exec($sql);
     }
-    private function createTableFormaPagamentos(){
+    private function createTableFormaPagamentos()
+    {
         $sql = "CREATE TABLE forma_pagamento (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome VARCHAR(50),
@@ -247,7 +248,8 @@ class DatabaseCreator
         $this->connection->exec($sql);
     }
 
-    private function createTableAssinaturas(){
+    private function createTableAssinaturas()
+    {
         $sql = "CREATE TABLE assinatura (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             cia_id INTEGER,
@@ -255,7 +257,7 @@ class DatabaseCreator
             validade DATETIME,
             ativo BOOLEAN
             ";
-            
+
         if ($this->dbType == self::SQLITE) {
             $sql .= ',
             FOREIGN KEY (cia_id) REFERENCES cia_aerea(id)
@@ -270,15 +272,16 @@ class DatabaseCreator
         echo $sql;
         $this->connection->exec($sql);
     }
-    private function createTablePagamentos(){
+    private function createTablePagamentos()
+    {
         $sql = "CREATE TABLE pagamento (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             cia_id INTEGER,
             valor DECIMAL(7,2),
             assinatura_id INTEGER
             ";
-        
-            
+
+
         if ($this->dbType == self::SQLITE) {
             $sql .= ',
             FOREIGN KEY (cia_id) REFERENCES cia_aerea(id),

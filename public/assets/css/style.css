@@ -25,3 +25,14 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+header li{
+    list-style: none;
+    display: inline;
+    margin-left: 10px;
+}

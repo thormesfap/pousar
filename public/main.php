@@ -11,7 +11,7 @@ use App\Infra\Database\DatabaseManager;
 
 require 'autoloader.php';
 
-$db = DatabaseManager::getInstance();
+$db = DatabaseManager::getConn();
 try {
     $db->query('SELECT * FROM usuario');
 } catch (\PDOException $e) {
@@ -19,7 +19,7 @@ try {
     $creator->up();
 }
 
-$A320 = new Aeronave("A320","Airbus", 23, 6, 6);
+$A320 = new Aeronave("A320", "Airbus", 23, 6, 6);
 $cia = new CiaAerea("Gol Linhas Aéreas", "12345678963541", "G3");
 $voo = new Voo(1083, "JUA", "GRU", $A320, $cia);
 $voo->setDataHoraSaida(new DateTimeImmutable());
@@ -49,4 +49,3 @@ foreach ($voo->getAssentosOcupados() as $ocupado) {
 }
 
 $voo->printMapa();
-

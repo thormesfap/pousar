@@ -5,13 +5,18 @@ require_once dirname(__DIR__) . '/autoloader.php';
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
+    <?php
+    include "./Pages/header.php";
+    ?>
     <div class="container">
         <h2>Login</h2>
         <form id="login-form" action="./Routes/login.php" method="POST">
@@ -21,4 +26,5 @@ require_once dirname(__DIR__) . '/autoloader.php';
         </form>
     </div>
 </body>
+
 </html>

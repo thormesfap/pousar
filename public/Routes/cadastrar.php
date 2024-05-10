@@ -1,8 +1,10 @@
 <?php
+
 use App\Entities\Usuario;
 use App\Infra\Database\DatabaseManager;
 
 require dirname(__DIR__) . '../../autoloader.php';
+
 date_default_timezone_set('America/Sao_Paulo');
 $data = $_POST;
 
@@ -15,7 +17,7 @@ $user->setNumeroEndereco($data['numero'] ?? '');
 $user->setUf($data['uf'] ?? '');
 $user->setMunicipio($data['municipio'] ?? '');
 
-$conn = DatabaseManager::getInstance();
+$conn = DatabaseManager::getConn();
 
 $sql = "INSERT INTO usuario (email, senha, nome, cpf, telefone, logradouro, numero_endereco, uf, municipio, data_hora_cadastro) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
@@ -31,12 +33,8 @@ $stmt->bindValue(8, $user->getUf());
 $stmt->bindValue(9, $user->getMunicipio());
 $stmt->bindValue(10, (new \DateTime())->format("Y-m-d H:i:s"));
 $stmt->execute();
-if($conn->lastInsertId()){
+if ($conn->lastInsertId()) {
     header('Location:index.php');
-} else{
+} else {
     echo "Não foi possível realizar o cadastro do usuário";
 }
-
-
-
-
