@@ -1,3 +1,8 @@
+<?php
+require_once dirname(__DIR__) . '/autoloader.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,9 +12,9 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <div class="login-container">
+    <div class="container">
         <h2>Login</h2>
-        <form id="login-form" action="login.php" method="POST">
+        <form id="login-form" action="./Routes/login.php" method="POST">
             <input type="text" id="email" name="email" placeholder="Username" required>
             <input type="password" id="senha" name="senha" placeholder="Password" required>
             <button type="submit">Login</button>

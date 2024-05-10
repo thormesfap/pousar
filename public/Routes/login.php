@@ -1,7 +1,7 @@
 <?php
 use App\Infra\Database\DatabaseManager;
 
-require 'autoloader.php';
+require dirname(__DIR__) . '../../autoloader.php';
 
 $conn = DatabaseManager::getInstance();
 

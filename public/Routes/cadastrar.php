@@ -2,7 +2,7 @@
 use App\Entities\Usuario;
 use App\Infra\Database\DatabaseManager;
 
-require 'autoloader.php';
+require dirname(__DIR__) . '../../autoloader.php';
 date_default_timezone_set('America/Sao_Paulo');
 $data = $_POST;
 
