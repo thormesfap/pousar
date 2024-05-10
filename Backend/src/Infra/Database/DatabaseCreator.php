@@ -55,7 +55,7 @@ class DatabaseCreator
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome VARCHAR(80),
             email VARCHAR(40),
-            senha VARCHAR(10),
+            senha VARCHAR(100),
             cpf CHAR(11),
             telefone VARCHAR (15),
             logradouro VARCHAR(80),

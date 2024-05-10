@@ -28,6 +28,10 @@ class Usuario extends Pessoa
         return $this;
     }
 
+    public function getSenha(): string{
+        return $this->senha;
+    }
+
     public function setCpf($cpf): self
     {
         $this->cpf = $cpf;
@@ -87,8 +91,8 @@ class Usuario extends Pessoa
 
     public function setUf(string $uf): self
     {
-        if (strlen($uf != 2)) {
-            throw new \ValueError("Informe sigla do estado da federação com 2 letras");
+        if (strlen($uf) != 2) {
+            throw new \ValueError("Informe sigla do estado da federação com 2 letras\n" . $uf);
         }
         $this->uf = mb_strtoupper($uf);
         return $this;

@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
-    <link rel="stylesheet" href="/Front/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form id="login-form">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+        <form id="login-form" action="login.php" method="POST">
+            <input type="text" id="email" name="email" placeholder="Username" required>
+            <input type="password" id="senha" name="senha" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
     </div>
-    <script src="/Front/js/script.js"></script>
 </body>
 </html>
