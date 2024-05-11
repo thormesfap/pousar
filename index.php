@@ -18,8 +18,8 @@ require_once 'autoload.php';
     include "public/Pages/templates/header.php";
     ?>
     <section class="section-container">
-        <h2>Cia Aérea</h2>
-        <p>Viaje pelo mundo</p>
+        <h2>Pousar</h2>
+        <p>Viaje pelo Brasil</p>
         <img src="/public/assets/images/world.svg">
     </section>
 </body>

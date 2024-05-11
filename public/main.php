@@ -22,8 +22,8 @@ try {
 $A320 = new Aeronave("A320", "Airbus", 23, 6, 6);
 $cia = new CiaAerea("Gol Linhas Aéreas", "12345678963541", "G3");
 $voo = new Voo(1083, "JUA", "GRU", $A320, $cia);
-$voo->setDataHoraSaida(new DateTimeImmutable());
-$voo->setDataHoraChegada((DateTimeImmutable::createFromInterface(new DateTime())->add(new \DateInterval("PT3H"))));
+$voo->setHoraSaida("00:55");
+$voo->setHoraChegada("03:55");
 $user = new Usuario("anon@anon.com", "Antonio Pedro");
 $user->setCpf("12345678912")->setTelefone("88997711335")->setLogradouro("São Miguel");
 $passageiro = new Passageiro($user->getNome(), $user->getCpf(), $user->getTelefone());
@@ -37,7 +37,7 @@ $passageiro2->marcarAssento("5D", $passagem2->getTrechos()[0]);
 
 
 
-echo "Vôo saindo de {$voo->getCodigoOrigem()} para {$voo->getCodigoDestino()}, no dia {$voo->getDataHoraSaida()->format('d/m/Y')} com {$voo->getQuantidadeAssentosDisponiveis()} assentos disponíveis e {$voo->getQuantidadeAssentosOcupados()} assentos ocupados\n";
+echo "Vôo saindo de {$voo->getCodigoOrigem()} para {$voo->getCodigoDestino()}, às {$voo->getHoraSaida()} com {$voo->getQuantidadeAssentosDisponiveis()} assentos disponíveis e {$voo->getQuantidadeAssentosOcupados()} assentos ocupados\n";
 // echo "Assentos Disponíveis\n";
 // foreach ($voo->getAssentosDisponiveis() as $disponivel) {
 //     echo $disponivel->getCodigo() . "\t";

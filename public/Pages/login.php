@@ -20,11 +20,19 @@ require_once '../../autoload.php';
     <div class="container">
         <h2>Login</h2>
         <form id="login-form" action="/public/Routes/logar.php" method="POST">
-            <input type="text" id="email" name="email" placeholder="Username" required>
-            <input type="password" id="senha" name="senha" placeholder="Password" required>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Password" required>
+            </div>
             <button type="submit">Login</button>
         </form>
-        <a href="cadastro.php">Cadastrar-se</a>
+
+        <a href="cadastro.php"><button type="button">Cadastrar-se</button></a>
+    </div>
     </div>
 </body>
 

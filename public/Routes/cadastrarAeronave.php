@@ -9,6 +9,7 @@ require '../../autoload.php';
 date_default_timezone_set('America/Sao_Paulo');
 $data = $_POST;
 
+
 $aero = new Aeronave($data['sigla'], $data['marca'], $data['fileira'], $data['assentos'], $data['prioritarios']);
 
 

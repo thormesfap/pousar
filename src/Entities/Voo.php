@@ -7,8 +7,8 @@ class Voo
     private int $numero;
     private string $codOrigem;
     private string $codDestino;
-    private \DateTimeImmutable $dataHoraSaida;
-    private \DateTimeImmutable $dataHoraChegada;
+    private string $horaSaida;
+    private string $horaChegada;
     private Aeronave $aeronave;
     private CiaAerea $ciaAerea;
     private array $assentos;
@@ -31,23 +31,27 @@ class Voo
         return $this->ciaAerea;
     }
 
-    public function setDataHoraSaida(\DateTimeImmutable $date)
+    public function getAeronave(){
+        return $this->aeronave;
+    }
+
+    public function setHoraSaida(string $hora)
     {
-        $this->dataHoraSaida = $date;
+        $this->horaSaida = $hora;
         return $this;
     }
-    public function setDataHoraChegada(\DateTimeImmutable $date)
+    public function setHoraChegada(string $hora)
     {
-        $this->dataHoraChegada = $date;
+        $this->horaChegada = $hora;
         return $this;
     }
-    public function getDataHoraSaida(): \DateTimeImmutable
+    public function getHoraSaida(): string
     {
-        return $this->dataHoraSaida;
+        return $this->horaSaida;
     }
-    public function getDataHoraChegada(): \DateTimeImmutable
+    public function getHoraChegada(): string
     {
-        return $this->dataHoraChegada;
+        return $this->horaChegada;
     }
     public function getCodigoOrigem()
     {
