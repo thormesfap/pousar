@@ -2,7 +2,8 @@
 
 namespace App\Entities;
 
-class Passagem{
+class Passagem extends Entity
+{
     private float $valor;
     private Passageiro $passageiro;
     private array $trechos;

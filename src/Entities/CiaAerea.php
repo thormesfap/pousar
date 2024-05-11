@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-class CiaAerea
+class CiaAerea extends Entity
 {
     private string $razaoSocial;
     private string $cnpj;

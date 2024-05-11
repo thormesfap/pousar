@@ -2,7 +2,8 @@
 
 namespace App\Entities;
 
-class Aeronave{
+class Aeronave extends Entity
+{
     private string $sigla;
     private int $qteAssentos;
     private int $qteFileiras;

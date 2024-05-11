@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-abstract class Pessoa
+abstract class Pessoa extends Entity
 {
     protected string $nome;
     protected string $cpf;

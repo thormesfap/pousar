@@ -74,6 +74,7 @@ class DatabaseCreator
             valor DECIMAL(7,2),
             id_passageiro INTEGER,
             id_cia_aerea INTEGER,
+            data_saida DATE,
             data_compra DATE";
 
         if ($this->dbType == self::SQLITE) {

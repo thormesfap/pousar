@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use ValueError;
 
-class Trecho
+class Trecho extends Entity
 {
     private Assento $assento;
     private Voo $voo;

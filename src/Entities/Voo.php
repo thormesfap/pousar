@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-class Voo
+class Voo extends Entity
 {
     private int $numero;
     private string $codOrigem;
