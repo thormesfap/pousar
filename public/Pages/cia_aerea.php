@@ -1,16 +1,23 @@
 <?php
 
+use App\DAO\CiaAereaDAO;
 use App\Entities\CiaAerea;
 
 include 'templates/header.php';
 require_once '../../autoload.php';
 
 //Pegar companhias do CiaAereaDAO
-$cias = [];
-$cias[] = new CiaAerea("Teste 1", "Teste 1", "ABC");
-$cias[] = new CiaAerea("Teste 2", "Teste 2", "CBA");
-$cias[] = new CiaAerea("Teste 3", "Teste 3", "CNB");
-$cias[] = new CiaAerea("Teste 4", "Teste 4", "POS");
+$ciaDAO = new CiaAereaDAO();
+
+$cias = $ciaDAO->read();
+if (isset($_GET['id'])) {
+    $ciaEdit = $ciaDAO->getById($_GET['id']);
+    if (!$ciaEdit) {
+        $ciaEdit = new CiaAerea('', '', '');
+    }
+} else{
+    $ciaEdit = new CiaAerea('', '', '');
+}
 ?>
 
 <head>
@@ -33,6 +40,7 @@ $cias[] = new CiaAerea("Teste 4", "Teste 4", "POS");
                         <td>{$cia->getRazaoSocial()}</td>
                         <td>{$cia->getCnpj()}</td>
                         <td>{$cia->getCodigoIata()}</td>
+                        <td><a href=\"/public/Pages/cia_aerea.php?id={$cia->getId()}\"><img src=\"/public/assets/images/edit-icon.svg\"></a></td>
                     </tr>";
             }
             ?>
@@ -42,27 +50,37 @@ $cias[] = new CiaAerea("Teste 4", "Teste 4", "POS");
 <div class="container">
     <h2>Cadastrar Companhia</h2>
     <form action="/public/Routes/cadastrarCiaAerea.php" method="POST">
+        <input type="hidden" name="id" value="<?php echo $ciaEdit->getId() ?? '' ?>">
         <div class="input-group">
             <label for="razao_social">Razão Social</label>
-            <input type="text" id="razao_social" name="razao_social" placeholder="Razão Social" required>
+            <input type="text" id="razao_social" name="razao_social" value="<?php echo $ciaEdit->getRazaoSocial() ?>" placeholder="Razão Social" required>
         </div>
         <div class="input-group">
             <label for="cnpj">CNPJ</label>
-            <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ">
+            <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ" value="<?php echo $ciaEdit->getCnpj() ?>">
         </div>
         <div class="input-group">
             <label for="iata">Código IATA</label>
-            <input type="text" id="iata" name="iata" placeholder="Código IATA">
+            <input type="text" id="iata" name="iata" placeholder="Código IATA" value="<?php echo $ciaEdit->getCodigoIata() ?>">
         </div>
         <div class="input-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Email">
+            <input type="email" id="email" name="email" placeholder="Email" value="<?php echo $ciaEdit->getEmail() ?? '' ?>">
         </div>
         <div class="input-group">
             <label for="telefone">Telefone</label>
-            <input type="text" id="telefone" name="telefone" placeholder="+55">
+            <input type="text" id="telefone" name="telefone" placeholder="+55" value="<?php echo $ciaEdit->getTelefone() ?? '' ?>">
         </div>
-        <button type="submit">Cadastrar</button>
+        <button type="submit">
+        <?php 
+            if($ciaEdit->getId()){
+                echo "Atualizar";
+            } else{
+                echo "Cadastrar";
+            }
+        ?>    
+        
+        </button>
     </form>
 </div>
 <?php

@@ -37,7 +37,7 @@ class CiaAerea extends Entity
     }
     public function getTelefone(): string
     {
-        return $this->telefone;
+        return $this->telefone ?? '';
     }
     public function setEmail(string $email): self
     {
@@ -46,6 +46,6 @@ class CiaAerea extends Entity
     }
     public function getEmail(): string
     {
-        return $this->email;
+        return $this->email ?? '';
     }
 }

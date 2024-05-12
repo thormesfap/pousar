@@ -24,7 +24,7 @@ $stmt->bindValue(3, $aero->getQuantidadeFilas());
 $stmt->bindValue(4, $aero->getAssentosFila());
 $stmt->bindValue(5, $data['prioritarios']);
 $stmt->execute();
-if ($conn->rowCount() > 0) {
+if ($stmt->rowCount() > 0) {
     header('Location:/public/Pages/aeronave.php');
 } else {
     echo "Não foi possível realizar o cadastro da aeronave";

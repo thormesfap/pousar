@@ -1,6 +1,15 @@
 <?php
-require_once 'autoload.php';
 
+use App\Infra\Database\DatabaseManager;
+use App\Infra\Database\DatabaseCreator;
+require_once 'autoload.php';
+    $db = DatabaseManager::getConn();
+    try {
+        $db->query('SELECT * FROM usuario');
+    } catch (\PDOException $e) {
+        $creator = new DatabaseCreator(DatabaseCreator::SQLITE);
+        $creator->up();
+    }
 ?>
 
 <!DOCTYPE html>

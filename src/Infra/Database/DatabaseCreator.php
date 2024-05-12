@@ -33,9 +33,9 @@ class DatabaseCreator
         $this->down();
         try {
             $this->createTableUsuario();
+            $this->createTablePassageiro();
             $this->createTableAeronave();
             $this->createTableCiaAerea();
-            $this->createTablePassageiro();
             $this->createTablePassagem();
             $this->createTableVoo();
             $this->createTableTrecho();
@@ -64,6 +64,29 @@ class DatabaseCreator
             uf CHAR(2),
             data_hora_cadastro DATE
         );";
+        $this->connection->exec($sql);
+    }
+    private function createTablePassageiro()
+    {
+        $sql = "CREATE TABLE passageiro (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome VARCHAR(80),
+            cpf CHAR(11),
+            email VARCHAR(60),
+            telefone VARCHAR(15),
+            id_usuario INTEGER,
+            telefone_contato VARCHAR(15)";
+        if ($this->dbType == self::SQLITE) {
+            $sql .= ',
+            FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+        );';
+        } else {
+            $sql .= '
+        );
+        ALTER TABLE passageiro ADD CONSTRAINT FK_usuario
+            FOREIGN KEY (id_usuario)
+            REFERENCES usuario (id);';
+        }
         $this->connection->exec($sql);
     }
     private function createTablePassagem()
@@ -115,18 +138,7 @@ class DatabaseCreator
         );";
         $this->connection->exec($sql);
     }
-    private function createTablePassageiro()
-    {
-        $sql = "CREATE TABLE passageiro (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome VARCHAR(80),
-            cpf CHAR(11),
-            email VARCHAR(60),
-            telefone VARCHAR(15),
-            telefone_contato VARCHAR(15)
-        );";
-        $this->connection->exec($sql);
-    }
+
     private function createTableAeronave()
     {
         $sql = "CREATE TABLE aeronave (
