@@ -10,7 +10,7 @@ class DatabaseManager
     private function __construct()
     {
     }
-    public static function getConn()
+    public static function getConn(): \PDO
     {
         if (self::$instance == null) {
             try {
