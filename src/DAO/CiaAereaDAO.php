@@ -37,7 +37,7 @@ class CiaAereaDAO
         $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
         return array_map([$this, 'mapCiaAerea'], $data);
     }
-    public function getById(int $id): CiaAerea
+    public function getById(int $id): ?CiaAerea
     {
         $sql = "SELECT * FROM cia_aerea WHERE id=?";
         $stmt = $this->conn->query($sql);
