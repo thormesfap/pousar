@@ -3,8 +3,8 @@
 use App\DAO\CiaAereaDAO;
 use App\Entities\CiaAerea;
 
-include 'templates/header.php';
 require_once '../../autoload.php';
+include 'templates/header.php';
 
 //Pegar companhias do CiaAereaDAO
 $ciaDAO = new CiaAereaDAO();

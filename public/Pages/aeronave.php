@@ -2,8 +2,8 @@
 
 use App\Entities\Aeronave;
 
-require 'templates/header.php';
 require_once '../../autoload.php';
+require 'templates/header.php';
 
 //Pegar aeronaves do AeronaveDAO
 $aeros = [];

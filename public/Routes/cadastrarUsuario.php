@@ -34,7 +34,7 @@ $stmt->bindValue(9, $user->getMunicipio());
 $stmt->bindValue(10, (new \DateTime())->format("Y-m-d H:i:s"));
 $stmt->execute();
 if ($conn->lastInsertId()) {
-    header('Location:/index.php');
+    header('Location:/public/Pages/login.php');
 } else {
     echo "Não foi possível realizar o cadastro do usuário";
 }

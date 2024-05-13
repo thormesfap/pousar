@@ -4,8 +4,8 @@ use App\Entities\Voo;
 use App\Entities\CiaAerea;
 use App\Entities\Aeronave;
 
-require 'templates/header.php';
 require_once '../../autoload.php';
+require 'templates/header.php';
 
 //Pegar voos do VooDAO
 $voos = [];
