@@ -12,6 +12,7 @@ class PassageiroDAO
     {
         $this->conn = DatabaseManager::getConn();
     }
+
     public function create(Passageiro $passageiro): bool{
         
         $sql = "INSERT INTO passageiro (nome, cpf, email, telefone, telefone_contato) VALUES(?,?,?,?,?)";
@@ -34,8 +35,8 @@ class PassageiroDAO
         $stmt->execute();
         $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
         return array_map([$this, 'mapPassageiro'], $data);
-        
     }
+
     public function getById(int $id): ?Passageiro{
         $sql = "SELECT * FROM passageiro WHERE id=?";
         $stmt = $this->conn->query($sql);
@@ -47,6 +48,7 @@ class PassageiroDAO
         }
         return $this->mapPassageiro($data);
     }
+    
     public function update(Passageiro $passageiro): bool{
         $sql = "UPDATE passageiro SET nome=?, cpf=?, email=?, telefone=?, telefone_contato=? WHERE id=?";
         $stmt = $this->conn->prepare($sql);
@@ -59,6 +61,7 @@ class PassageiroDAO
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
+
     public function delete(int $id): bool{
         $sql = "DELETE FROM passageiro WHERE id=?";
         $stmt = $this->conn->prepare($sql);
