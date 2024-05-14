@@ -26,8 +26,20 @@ class PassagemDAO {
         $stmt->bindValue(3, $passagem->getPassageiro()->getId() ?? '');
         $stmt->bindValue(4, $passagem->getCiaAerea()->getId() ?? '');
         $stmt->bindValue(5, $passagem->getDataSaida()->format("Y-m-d") ?? '');
-        $stmt->bindValue(6, $passagem->getDataCompra()->format("Y-m-d") ?? '');
-        return $stmt->execute();
+        $stmt->bindValue(6, $passagem->getDataCompra()->format("Y-m-d H:i:s") ?? '');
+        $stmt->execute();
+        if($stmt->rowCount() == 0){
+            return false;
+        }
+        $id = $this->conn->lastInsertId();
+        $passagem->setId($id);
+        foreach($passagem->getTrechos() as $trecho){
+            if(!$this->trechoDAO->create($trecho)){
+                return false;
+            }
+        }
+        return true;
+        
     }
     /**
      * @return Passagem[]
@@ -51,6 +63,23 @@ class PassagemDAO {
             return null;
         }
         return $this->mapPassagem($data);
+    }
+
+    /**
+     * @return Passagem[]
+     */
+
+    public function getByUsuarioId(int $id): array
+    {
+        $sql = "SELECT *, passagem.id as id_passagem, usuario.email as email_usuario, usuario.telefone as telefone_usuario, usuario.nome as nome_usuario, usuario.cpf as cpf_usuario FROM passagem INNER JOIN usuario ON usuario.id=passagem.id_usuario_comprador INNER JOIN passageiro ON passageiro.id=passagem.id_passageiro INNER JOIN cia_aerea ON cia_aerea.id=passagem.id_cia_aerea WHERE usuario.id=?";
+        $stmt = $this->conn->query($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        if (count($data) == 0) {
+            return [];
+        }
+        return array_map([$this, 'mapPassagem'], $data);
     }
 
     public function update(Passagem $passagem): bool{
@@ -83,7 +112,7 @@ class PassagemDAO {
         $passagem = new Passagem($user, $dados->valor, $passageiro, $cia, new \DateTime($dados->data_saida));
         $passagem->setId($dados->id_passagem);
         $passagem->setdatacompra(new \DateTimeImmutable($dados->data_compra));
-        $trechos = $this->trechoDAO->read($passagem->getId());
+        $trechos = $this->trechoDAO->read($passagem);
         foreach($trechos as $trecho){
             $passagem->addTrecho($trecho);
         }

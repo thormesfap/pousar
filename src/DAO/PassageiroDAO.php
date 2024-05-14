@@ -8,20 +8,23 @@ use App\Infra\Database\DatabaseManager;
 class PassageiroDAO
 {
     private $conn;
+    private $userDAO;
     public function __construct()
     {
         $this->conn = DatabaseManager::getConn();
+        $this->userDAO = new UsuarioDAO();
     }
 
     public function create(Passageiro $passageiro): bool{
         
-        $sql = "INSERT INTO passageiro (nome, cpf, email, telefone, telefone_contato) VALUES(?,?,?,?,?)";
+        $sql = "INSERT INTO passageiro (nome, cpf, email, telefone, telefone_contato, id_usuario) VALUES(?,?,?,?,?,?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $passageiro->getNome() ?? '');
         $stmt->bindValue(2, $passageiro->getCpf() ?? '');
         $stmt->bindValue(3, $passageiro->getEmail() ?? '');
         $stmt->bindValue(4, $passageiro->getTelefone() ?? '');
         $stmt->bindValue(5, $passageiro->getTelefoneContato() ?? '');
+        $stmt->bindValue(6, $passageiro->getUsuario()->getId() ?? null);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
@@ -50,14 +53,15 @@ class PassageiroDAO
     }
     
     public function update(Passageiro $passageiro): bool{
-        $sql = "UPDATE passageiro SET nome=?, cpf=?, email=?, telefone=?, telefone_contato=? WHERE id=?";
+        $sql = "UPDATE passageiro SET nome=?, cpf=?, email=?, telefone=?, telefone_contato=?, id_usuario=? WHERE id=?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $passageiro->getNome() ?? '');
         $stmt->bindValue(2, $passageiro->getCpf() ?? '');
         $stmt->bindValue(3, $passageiro->getEmail() ?? '');
         $stmt->bindValue(4, $passageiro->getTelefone() ?? '');
         $stmt->bindValue(5, $passageiro->getTelefoneContato() ?? '');
-        $stmt->bindValue(6, $passageiro->getId() ?? '');
+        $stmt->bindValue(6, $passageiro->getUsuario()->getId() ?? '');
+        $stmt->bindValue(7, $passageiro->getId() ?? '');
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
@@ -73,6 +77,8 @@ class PassageiroDAO
     private function mapPassageiro(object $dados):Passageiro{
         $pass = new Passageiro($dados->nome, $dados->cpf, $dados->telefone);
         $pass->setEmail($dados->email ?? null)->setTelefoneContato($dados->telefone_contato ?? '')->setId($dados->id);
+        $user = $this->userDAO->getById($dados->id_usuario);
+        $pass->setUsuario($user);
         return $pass;
     }
 }

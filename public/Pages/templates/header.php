@@ -1,5 +1,6 @@
 <?php
 
+use App\DAO\UsuarioDAO;
 use App\Infra\Database\DatabaseManager;
 
 include 'cabecalho.php';
@@ -8,12 +9,6 @@ $logado = false;
 session_start();
 if (isset($_SESSION['user'])) {
     $logado = $_SESSION['user'];
-    $conn = DatabaseManager::getConn();
-
-    $stmt = $conn->query("SELECT * FROM usuario WHERE email=:email");
-    $stmt->bindValue('email', $logado);
-    $stmt->execute();
-    $user = $stmt->fetchAll(PDO::FETCH_OBJ)[0];
 }
 ?>
 
@@ -26,11 +21,17 @@ if (isset($_SESSION['user'])) {
             <li><a href="/public/Pages/aeronave.php">Aeronaves</a></li>
             <li><a href="/public/Pages/cia_aerea.php">Cias Aéreas</a></li>
             <li><a href="/public/Pages/voo.php">Vôos</a></li>
+            <li><a href="/public/Pages/passageiro.php">Passageiros</a></li>
+            <?php 
+            if($logado){
+                echo "<li><a href=\"/public/Pages/passagens.php\">Minhas Passagens</a></li>";
+            }
+            ?>
             <li><?php
-                if ($logado) {
-                    echo "Bem vindo {$user->nome} (<a href=\"/public/Routes/logout.php\">logout</a>)";
-                } else {
+                if (!$logado) {
                     echo '<a href="/public/Pages/login.php">Logar</a>';
+                } else {
+                    echo "Bem vindo {$logado->getNome()} (<a href=\"/public/Routes/logout.php\">logout</a>)";
                 }
                 ?>
             </li>

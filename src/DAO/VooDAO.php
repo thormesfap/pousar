@@ -33,7 +33,7 @@ class VooDAO {
      */
     public function read(): array{
         
-        $sql = "SELECT * FROM voo INNER JOIN aeronave ON voo.id_aeronave=aeronave.id INNER JOIN cia_aerea on cia_aerea.id=voo.id_companhia";
+        $sql = "SELECT *, voo.id as id_voo FROM voo INNER JOIN aeronave ON voo.id_aeronave=aeronave.id INNER JOIN cia_aerea on cia_aerea.id=voo.id_companhia";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -41,7 +41,7 @@ class VooDAO {
     }
 
     public function getById(int $id): ?Voo{
-        $sql = "SELECT * FROM voo INNER JOIN aeronave ON voo.id_aeronave=aeronave.id INNER JOIN cia_aerea on cia_aerea.id=voo.id_companhia WHERE voo.id=?";
+        $sql = "SELECT *, voo.id as id_voo FROM voo INNER JOIN aeronave ON voo.id_aeronave=aeronave.id INNER JOIN cia_aerea on cia_aerea.id=voo.id_companhia WHERE voo.id=?";
         $stmt = $this->conn->query($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
@@ -66,11 +66,12 @@ class VooDAO {
         return $stmt->execute();
     }
 
-    public function delete(int $id): bool{
-        $sql = "DELETE FROM voo WHERE id=?";
+    public function delete(string $id): bool{
+        $sql = "DELETE FROM voo WHERE id=:id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(1, $id);
-        return $stmt->execute();
+        $stmt->bindValue('id', $id);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 
     private function mapVoo(object $data): Voo

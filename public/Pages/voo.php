@@ -3,16 +3,33 @@
 use App\Entities\Voo;
 use App\Entities\CiaAerea;
 use App\Entities\Aeronave;
+use App\DAO\VooDAO;
+use App\DAO\CiaAereaDAO;
+use App\DAO\AeronaveDAO;
 
 require_once '../../autoload.php';
 require 'templates/header.php';
 
 //Pegar voos do VooDAO
-$voos = [];
-$voos[] = (new Voo(320, "JDO", 'GRU', new Aeronave("100", "Fokker 100", 15, 4, 6), new CiaAerea("Teste 1", "Teste 1", "IJT")))->setHoraSaida("23:55")->setHoraChegada("03:05");
-$voos[] = (new Voo(1240, "JDO", 'FOR', new Aeronave("320", "Airbus A320", 15, 4, 6), new CiaAerea("Teste 1", "Teste 1", "IJT")))->setHoraSaida("21:40")->setHoraChegada("22:45");
-$voos[] = (new Voo(1805, "JDO", 'BSB', new Aeronave("787", "Boing 787", 30, 4, 6), new CiaAerea("Teste 2", "Teste 2", "TIJ")))->setHoraSaida("22:05")->setHoraChegada("00:15");
 
+$vooDAO = new VooDAO();
+$voos = $vooDAO->read();
+$aeronaveDAO = new AeronaveDAO();
+$ciaAereaDAO = new CiaAereaDAO();
+if (isset($_GET['id'])) {
+    if (isset($_GET['delete']) && $_GET['delete']) {
+        $request = $vooDAO->delete((int) $_GET['id']);
+        if ($request) {
+            header("Location:/public/Pages/voo.php");
+        }
+    }
+    $vooEdit = $vooDAO->getById($_GET['id']);
+    if (!$vooEdit) {
+        $vooEdit = new Voo(0, '', '', new Aeronave('', '', 0, 0, 0), new CiaAerea('', '', ''));
+    }
+} else {
+    $vooEdit = new Voo(0, '', '', new Aeronave('', '', 0, 0, 0), new CiaAerea('', '', ''));
+}
 ?>
 
 <head>
@@ -45,6 +62,11 @@ $voos[] = (new Voo(1805, "JDO", 'BSB', new Aeronave("787", "Boing 787", 30, 4, 6
             <td>{$voo->getHoraChegada()}</td>
             <td>{$voo->getCiaAerea()->getRazaoSocial()}</td>
             <td>{$voo->getAeronave()->getMarca()}</td>
+                    <td>
+        <a href=\"/public/Pages/voo.php?id={$voo->getId()}\"><img src=\"/public/assets/images/edit-icon.svg\"></a>
+        <a href=\"/public/Pages/voo.php?id={$voo->getId()}&delete=true\"><img src=\"/public/assets/images/trash-icon.svg\"></a>
+        <a href=\"/public/Pages/passagem.php?id_voo={$voo->getId()}\"><img src=\"/public/assets/images/money-icon.svg\"></a>
+        </td>
             </tr>";
             }
             ?>
@@ -54,50 +76,73 @@ $voos[] = (new Voo(1805, "JDO", 'BSB', new Aeronave("787", "Boing 787", 30, 4, 6
 <div class="container">
     <h2>Cadastrar Voo</h2>
     <form action="/public/Routes/cadastrarVoo.php" method="POST">
+        <input type="hidden" name="id" value="<?php echo $vooEdit->getId() ?>">
         <div class="input-group">
             <label for="numero">Número do Voo</label>
-            <input type="number" id="numero" name="numero" placeholder="Numero" required>
+            <input type="number" id="numero" name="numero" placeholder="Numero" value="<?php echo $vooEdit->getNumero() ?>" required>
         </div>
 
         <div class="input-group">
             <label for="cod_origem">Código Aeroporto Origem</label>
-            <input type="text" id="cod_origem" name="cod_origem" placeholder="JDO">
+            <input type="text" id="cod_origem" name="cod_origem" placeholder="JDO" value="<?php echo $vooEdit->getCodigoOrigem() ?>">
         </div>
 
 
         <div class="input-group">
             <label for="cod_destino">Código Aeroporto Destino</label>
-            <input type="text" id="cod_destino" name="cod_destino" placeholder="GRU">
+            <input type="text" id="cod_destino" name="cod_destino" placeholder="GRU" value="<?php echo $vooEdit->getCodigoDestino() ?>">
         </div>
 
         <div class="input-group">
             <label for="hora_saida">Hora de Saída</label>
-            <input type="text" id="hora_saida" name="hora_saida" placeholder="00:00">
+            <input type="text" id="hora_saida" name="hora_saida" placeholder="00:00" value="<?php echo $vooEdit->getHoraSaida() ?>">
         </div>
 
         <div class="input-group">
             <label for="hora_chegada">Hora de Chegada</label>
-            <input type="text" id="hora_chegada" name="hora_chegada" placeholder="03:00">
+            <input type="text" id="hora_chegada" name="hora_chegada" placeholder="03:00" value="<?php echo $vooEdit->getHoraChegada() ?>">
         </div>
 
         <div class="input-group">
             <label for="cia_aerea">Cia Aérea</label>
             <select name="cia_aerea" id="cia_aerea">
-                <option value="1">Cia 1</option>
-                <option value="2">Cia 2</option>
-                <option value="3">Cia 3</option>
+                <?php
+                $cias = $ciaAereaDAO->read();
+                foreach ($cias as $cia) {
+                    $selecionada = '';
+                    if ($cia->getId() == $vooEdit->getCiaAerea()->getId() ?? '') {
+                        $selecionada = 'selected';
+                    }
+                    echo "<option $selecionada value=\"{$cia->getId()}\">{$cia->getRazaoSocial()}</option>";
+                }
+                ?>
             </select>
         </div>
 
         <div class="input-group">
             <label for="aeronave">Aeronave</label>
             <select name="aeronave" id="aeronave">
-                <option value="1">Airbus A320</option>
-                <option value="2">Fokker 100</option>
-                <option value="3">Boing 767</option>
+                <?php
+                $aeronaves = $aeronaveDAO->read();
+                foreach ($aeronaves as $aero) {
+                    $selecionada = '';
+                    if ($aero->getId() == $vooEdit->getAeronave()->getId() ?? '') {
+                        $selecionada = 'selected';
+                    }
+                    echo "<option $selecionada value=\"{$aero->getId()}\">{$aero->getSigla()} - {$aero->getMarca()}</option>";
+                }
+                ?>
             </select>
         </div>
-        <button type="submit">Cadastrar</button>
+        <button type="submit">
+            <?php
+            if ($vooEdit->getId()) {
+                echo "Atualizar";
+            } else {
+                echo "Cadastrar";
+            }
+            ?>
+        </button>
     </form>
 </div>
 <?php

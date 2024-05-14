@@ -6,6 +6,9 @@ class Passagem extends Entity
 {
     private float $valor;
     private Passageiro $passageiro;
+    /**
+     * @var Trecho[] $trechos
+     */
     private array $trechos;
     private CiaAerea $ciaAerea;
     private Usuario $comprador;
@@ -23,6 +26,19 @@ class Passagem extends Entity
         $this->trechos = [];
     }
 
+    public function getOrigem(){
+        if(count($this->trechos) > 0){
+            return $this->trechos[0]->getVoo()->getCodigoOrigem();
+        }
+        return '';
+    }
+
+    public function getDestino(){
+        if (count($this->trechos) > 0) {
+            return end($this->trechos)->getVoo()->getCodigoDestino();
+        }
+        return '';
+    }
     public function getValor(): float
     {
         return $this->valor;

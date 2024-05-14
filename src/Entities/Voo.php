@@ -45,13 +45,13 @@ class Voo extends Entity
         $this->horaChegada = $hora;
         return $this;
     }
-    public function getHoraSaida(): string
+    public function getHoraSaida(): ?string
     {
-        return $this->horaSaida;
+        return $this->horaSaida ?? '';
     }
-    public function getHoraChegada(): string
+    public function getHoraChegada(): ?string
     {
-        return $this->horaChegada;
+        return $this->horaChegada ?? '';
     }
     public function getCodigoOrigem()
     {

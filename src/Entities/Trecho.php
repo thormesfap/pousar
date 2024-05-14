@@ -25,7 +25,10 @@ class Trecho extends Entity
     }
     public function getAssento(): ?string
     {
-        return $this->assento->getCodigo() ?? null;
+        if(!isset($this->assento)){
+            return null;
+        }
+        return $this->assento->getCodigo();
     }
 
     public function marcarAssento(string $codigo, Passageiro $passageiro)

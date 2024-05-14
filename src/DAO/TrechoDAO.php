@@ -13,11 +13,11 @@ use ValueError;
 class TrechoDAO
 {
     private $conn;
-    private $passagemDAO;
+    
     public function __construct()
     {
         $this->conn = DatabaseManager::getConn();
-        $this->passagemDAO = new PassagemDAO();
+    
     }
 
     public function create(Trecho $trecho): bool
@@ -27,20 +27,31 @@ class TrechoDAO
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $trecho->getPassagem()->getId() ?? '');
         $stmt->bindValue(2, $trecho->getAssento() ?? '');
-        return $stmt->execute();
+        $stmt->execute();
+        if($stmt->rowCount() == 0){
+            return false;
+        }
+        $id = $this->conn->lastInsertId();
+        $trecho->setId($id);
+        $sql2 = "INSERT INTO trecho_voo (id_trecho, id_voo) VALUES (?,?)";
+        $stmt2 = $this->conn->prepare($sql2);
+        $stmt2->bindValue(1, $trecho->getId());
+        $stmt2->bindValue(2, $trecho->getVoo()->getId());
+        $stmt2->execute();
+        return $stmt2->rowCount() > 0;
     }
     /**
      * @return Trecho[]
      */
-    public function read(int $idPassagem): array
+    public function read(Passagem $passagem): array
     {
-        $passagem = $this->passagemDAO->getById($idPassagem);
+        
         if(!$passagem){
-            throw new ValueError("Passagem com id $idPassagem não encontrada");
+            throw new ValueError("Passagem com id {$passagem->getId()} não encontrada");
         }
-        $sql = "SELECT * FROM trecho INNER JOIN trecho_voo ON trecho_voo.id_trecho=trecho.id INNER JOIN voo ON voo.id=trecho_voo.id INNER JOIN cia_aerea ON voo.id_companhia=cia_aerea.id INNER JOIN aeronave ON aeronave.id=voo.id_aeronave WHERE id_passagem=?;";
+        $sql = "SELECT * FROM trecho INNER JOIN trecho_voo ON trecho_voo.id_trecho=trecho.id INNER JOIN voo ON voo.id=trecho_voo.id_voo INNER JOIN cia_aerea ON voo.id_companhia=cia_aerea.id INNER JOIN aeronave ON aeronave.id=voo.id_aeronave WHERE id_passagem=?";
         $stmt = $this->conn->query($sql);
-        $stmt->bindValue(1, $idPassagem);
+        $stmt->bindValue(1, $passagem->getId());
         $stmt->execute();
         $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
         foreach($data as $dados){

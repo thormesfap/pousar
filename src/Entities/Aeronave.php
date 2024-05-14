@@ -45,5 +45,8 @@ class Aeronave extends Entity
     public function getMarca(){
         return $this->marca;
     }
+    public function getAssentosPrioritarios(){
+        return $this->assentosPrioritarios;
+    }
 
 }

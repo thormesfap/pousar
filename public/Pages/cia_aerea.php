@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
     if (!$ciaEdit) {
         $ciaEdit = new CiaAerea('', '', '');
     }
-} else{
+} else {
     $ciaEdit = new CiaAerea('', '', '');
 }
 ?>
@@ -40,8 +40,11 @@ if (isset($_GET['id'])) {
                         <td>{$cia->getRazaoSocial()}</td>
                         <td>{$cia->getCnpj()}</td>
                         <td>{$cia->getCodigoIata()}</td>
-                        <td><a href=\"/public/Pages/cia_aerea.php?id={$cia->getId()}\"><img src=\"/public/assets/images/edit-icon.svg\"></a></td>
-                    </tr>";
+                        <td>
+                        <a href=\"/public/Pages/cia_aerea.php?id={$cia->getId()}\"><img src=\"/public/assets/images/edit-icon.svg\"></a>
+                        <a href=\"/public/Pages/cia_aerea.php?id={$cia->getId()}&delete=true\"><img src=\"/public/assets/images/trash-icon.svg\"></a>
+                        </td>
+                        </tr>";
             }
             ?>
         </tbody>
@@ -72,14 +75,14 @@ if (isset($_GET['id'])) {
             <input type="text" id="telefone" name="telefone" placeholder="+55" value="<?php echo $ciaEdit->getTelefone() ?? '' ?>">
         </div>
         <button type="submit">
-        <?php 
-            if($ciaEdit->getId()){
+            <?php
+            if ($ciaEdit->getId()) {
                 echo "Atualizar";
-            } else{
+            } else {
                 echo "Cadastrar";
             }
-        ?>    
-        
+            ?>
+
         </button>
     </form>
 </div>

@@ -5,12 +5,22 @@ namespace App\Entities;
 class Passageiro extends Pessoa{
     private string $telefoneContato;
     private string $email;
+    private Usuario $usuario;
 
     public function __construct(string $nome, string $cpf, string $telefone)
     {
         $this->nome = $nome;
         $this->cpf = $cpf;
         $this->telefone = $telefone;
+    }
+
+    public function setUsuario(Usuario $usuario){
+        $this->usuario = $usuario;
+        return $this;
+    }
+
+    public function getUsuario(): ?Usuario{
+        return $this->usuario ?? null;
     }
 
     public function setTelefoneContato(string $telefone):self{
