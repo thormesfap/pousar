@@ -16,7 +16,7 @@ class VooDAO {
 
     public function create(Voo $voo): bool{
         
-        $sql = "INSERT INTO voo (numero, cod_origem, cod_destino, id_aeronave, id_companhia, data_hora_saida, data_hora_chegada) VALUES(?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO voo (numero, cod_origem, cod_destino, id_aeronave, id_companhia, data_hora_saida, data_hora_chegada, valor) VALUES(?,?,?,?,?,?,?,?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $voo->getNumero() ?? '');
         $stmt->bindValue(2, $voo->getCodigoOrigem() ?? '');
@@ -25,6 +25,7 @@ class VooDAO {
         $stmt->bindValue(5, $voo->getCiaAerea()->getId() ?? '');
         $stmt->bindValue(6, $voo->getHoraSaida() ?? '');
         $stmt->bindValue(7, $voo->getHoraChegada() ?? '');
+        $stmt->bindValue(8, $voo->getValor() ?? 0);
         return $stmt->execute();
     }
 
@@ -53,7 +54,7 @@ class VooDAO {
     }
 
     public function update(Voo $voo): bool{
-        $sql = "UPDATE voo SET numero=?, cod_origem=?, cod_destino=?, id_aeronave=?, id_companhia=?, data_hora_saida=?, data_hora_chegada=? WHERE id=?";
+        $sql = "UPDATE voo SET numero=?, cod_origem=?, cod_destino=?, id_aeronave=?, id_companhia=?, data_hora_saida=?, data_hora_chegada=? valor=? WHERE id=?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $voo->getNumero() ?? '');
         $stmt->bindValue(2, $voo->getCodigoOrigem() ?? '');
@@ -62,7 +63,8 @@ class VooDAO {
         $stmt->bindValue(5, $voo->getCiaAerea()->getId() ?? '');
         $stmt->bindValue(6, $voo->getHoraSaida() ?? '');
         $stmt->bindValue(7, $voo->getHoraChegada() ?? '');
-        $stmt->bindValue(8, $voo->getId() ?? '');
+        $stmt->bindValue(8, $voo->getHoraChegada() ?? '');
+        $stmt->bindValue(9, $voo->getId() ?? '');
         return $stmt->execute();
     }
 
@@ -83,6 +85,7 @@ class VooDAO {
         $voo = new Voo($data->numero, $data->cod_origem, $data->cod_destino, $aeronave, $cia);
         $voo->setHoraSaida($data->data_hora_saida);
         $voo->setHoraChegada($data->data_hora_chegada);
+        $voo->setValor($data->valor ?? 0);
         $voo->setId($data->id_voo);
         return $voo;
     }

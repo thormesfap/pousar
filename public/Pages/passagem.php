@@ -37,6 +37,7 @@ $passageiroDAO = new PassageiroDAO();
                 <th>Hora Saída</th>
                 <th>Hora Chegada</th>
                 <th>Cia Aérea</th>
+                <th>Valor</th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +49,7 @@ $passageiroDAO = new PassageiroDAO();
             <td>{$voo->getHoraSaida()}</td>
             <td>{$voo->getHoraChegada()}</td>
             <td>{$voo->getCiaAerea()->getRazaoSocial()}</td>
+            <td>R$ " . number_format($voo->getValor(), 2,",",".") . "</td>
             </tr>";
             ?>
         </tbody>
@@ -58,10 +60,6 @@ $passageiroDAO = new PassageiroDAO();
     <form action="/public/Routes/comprarPassagem.php" method="POST">
         <input type="hidden" name="id_voo" value="<?php echo $voo->getId() ?>">
         <input type="hidden" name="id_comprador" value="<?php echo $logado->getId() ?>">
-        <div class="input-group">
-            <label for="valor">Valor</label>
-            <input name="valor" id="valor" type="number" min=200 max=99999 step="0.50" required>
-        </div>
         <div class="input-group">
             <label for="data">Data</label>
             <input name="data" id="data" type="date" required>

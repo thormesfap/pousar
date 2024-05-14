@@ -46,6 +46,9 @@ if (isset($_GET['id'])) {
         <tbody>
             <?php
             foreach ($passageiros as $passageiro) {
+                if($passageiro->getUsuario()->getId() != $logado->getId()){
+                    continue;
+                }
                 echo "<tr>
                         <td>{$passageiro->getNome()}</td>
                         <td>{$passageiro->getEmail()}</td>

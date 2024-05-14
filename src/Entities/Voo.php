@@ -11,6 +11,7 @@ class Voo extends Entity
     private string $horaChegada;
     private Aeronave $aeronave;
     private CiaAerea $ciaAerea;
+    private float $valor;
     private array $assentos;
 
     public function __construct(int $numero, string $codOrigem, string $codDestino, Aeronave $aeronave, CiaAerea $ciaAerea)
@@ -66,6 +67,14 @@ class Voo extends Entity
     {
         return $this->assentos;
     }
+    public function getValor():float{
+        return $this->valor ?? 0;
+    }
+    public function setValor(float $valor):self{
+        $this->valor = $valor;
+        return $this;
+    }
+
     // filtra assentos que não estão ocupados
     public function getAssentosDisponiveis(): array
     {

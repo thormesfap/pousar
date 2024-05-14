@@ -9,6 +9,7 @@ require 'templates/header.php';
 //Pegar aeronaves do AeronaveDAO
 $aeronaveDAO = new AeronaveDAO();
 $aeros = $aeronaveDAO->read();
+
 if (isset($_GET['id'])) {
     if(isset($_GET['delete']) && $_GET['delete']){
         $aeronaveDAO->delete($_GET['id']);

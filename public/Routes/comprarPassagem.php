@@ -23,7 +23,7 @@ $usuarioDAO = new UsuarioDAO();
 $voo = $vooDAO->getById($data['id_voo']);
 $user = $usuarioDAO->getById($data['id_comprador']);
 $passageiro = $passageiroDAO->getById($data['passageiro']);
-$passagem = new Passagem($user, $data['valor'], $passageiro, $voo->getCiaAerea(), new \DateTime($data['data']));
+$passagem = new Passagem($user, $voo->getValor() ?? 0, $passageiro, $voo->getCiaAerea(), new \DateTime($data['data']));
 $trecho = new Trecho($voo, $passagem);
 $passagem->addTrecho($trecho);
 $request = $passagemDAO->create($passagem);

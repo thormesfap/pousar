@@ -11,6 +11,10 @@ $ciaDAO = new CiaAereaDAO();
 
 $cias = $ciaDAO->read();
 if (isset($_GET['id'])) {
+    if(isset($_GET['delete']) && $_GET['delete']){
+        $ciaDAO->delete($_GET['id']);
+        header("Location:/public/Pages/cia_aerea.php");
+    }
     $ciaEdit = $ciaDAO->getById($_GET['id']);
     if (!$ciaEdit) {
         $ciaEdit = new CiaAerea('', '', '');

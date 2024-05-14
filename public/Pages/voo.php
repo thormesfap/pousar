@@ -47,6 +47,7 @@ if (isset($_GET['id'])) {
                 <th>Hora Chegada</th>
                 <th>Cia Aérea</th>
                 <th>Aeronave</th>
+                <th>Valor</th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +55,11 @@ if (isset($_GET['id'])) {
             <?php
 
             foreach ($voos as $voo) {
+                if ($logado) {
+                    $link = "<a href=\"/public/Pages/passagem.php?id_voo={$voo->getId()}\"><img src=\"/public/assets/images/money-icon.svg\"></a>";
+                } else {
+                    $link = "";
+                }
                 echo "<tr>
             <td>{$voo->getNumero()}</td>
             <td>{$voo->getCodigoOrigem()}</td>
@@ -62,12 +68,11 @@ if (isset($_GET['id'])) {
             <td>{$voo->getHoraChegada()}</td>
             <td>{$voo->getCiaAerea()->getRazaoSocial()}</td>
             <td>{$voo->getAeronave()->getMarca()}</td>
+            <td>R$ " . number_format($voo->getValor(), 2, ",", ".") . "</td>
                     <td>
         <a href=\"/public/Pages/voo.php?id={$voo->getId()}\"><img src=\"/public/assets/images/edit-icon.svg\"></a>
         <a href=\"/public/Pages/voo.php?id={$voo->getId()}&delete=true\"><img src=\"/public/assets/images/trash-icon.svg\"></a>
-        <a href=\"/public/Pages/passagem.php?id_voo={$voo->getId()}\"><img src=\"/public/assets/images/money-icon.svg\"></a>
-        </td>
-            </tr>";
+        $link";
             }
             ?>
         </tbody>
@@ -101,6 +106,10 @@ if (isset($_GET['id'])) {
         <div class="input-group">
             <label for="hora_chegada">Hora de Chegada</label>
             <input type="text" id="hora_chegada" name="hora_chegada" placeholder="03:00" value="<?php echo $vooEdit->getHoraChegada() ?>">
+        </div>
+        <div class="input-group">
+            <label for="valor">Valor</label>
+            <input type="number" id="valor" name="valor" placeholder="" value="<?php echo $vooEdit->getValor() ?>" max=99999 min=200 step=0.25>
         </div>
 
         <div class="input-group">
