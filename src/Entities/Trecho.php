@@ -15,6 +15,18 @@ class Trecho extends Entity
         $this->voo = $voo;
         $this->passagem = $passagem;
     }
+    public function getVoo(): Voo
+    {
+        return $this->voo;
+    }
+    public function getPassagem(): Passagem
+    {
+        return $this->passagem;
+    }
+    public function getAssento(): ?string
+    {
+        return $this->assento->getCodigo() ?? null;
+    }
 
     public function marcarAssento(string $codigo, Passageiro $passageiro)
     {

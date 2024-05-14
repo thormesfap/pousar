@@ -14,19 +14,19 @@ class UsuarioDAO {
 
     public function create(Usuario $usuario): bool{
         
-        $sql = "INSERT INTO usuario (nome, cpf, telefone, senha, logradouro, numeroEndereco, municipio, uf, dataHoraCadastro) VALUES(?,?,?,?,?)";
+        $sql = "INSERT INTO usuario (nome, email, cpf, telefone, senha, logradouro, numero_endereco, municipio, uf, data_hora_cadastro) VALUES(?,?,?,?,?,?,?,?,?,?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $usuario->getNome() ?? '');
-        $stmt->bindValue(2, $usuario->getCpf() ?? '');
-        $stmt->bindValue(3, $usuario->getTelefone() ?? '');
-        $stmt->bindValue(4, $usuario->getSenha() ?? '');
-        $stmt->bindValue(5, $usuario->getLogradouro() ?? '');
-        $stmt->bindValue(6, $usuario->getNumeroEndereco() ?? '');
-        $stmt->bindValue(7, $usuario->getMunicipio() ?? '');
-        $stmt->bindValue(8, $usuario->getUf() ?? '');
-        $stmt->bindValue(9, $usuario->getDataHoraCadastro() ?? '');
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
+        $stmt->bindValue(2, $usuario->getEmail() ?? '');
+        $stmt->bindValue(3, $usuario->getCpf() ?? '');
+        $stmt->bindValue(4, $usuario->getTelefone() ?? '');
+        $stmt->bindValue(5, $usuario->getSenha() ?? '');
+        $stmt->bindValue(6, $usuario->getLogradouro() ?? '');
+        $stmt->bindValue(7, $usuario->getNumeroEndereco() ?? '');
+        $stmt->bindValue(8, $usuario->getMunicipio() ?? '');
+        $stmt->bindValue(9, $usuario->getUf() ?? '');
+        $stmt->bindValue(10, $usuario->getDataHoraCadastro()->format("Y-m-d H:i:s") ?? '');
+        return $stmt->execute();
     }
     /**
      * @return Usuario[]
@@ -53,20 +53,20 @@ class UsuarioDAO {
     }
 
     public function update(Usuario $usuario): bool{
-        $sql = "UPDATE usuario SET nome=?, cpf=?, telefone=?, senha=?, logradouro=?, numeroEndereco=?, municipio=?, uf=?, dataHoraCadastro=? WHERE id=?";
+        $sql = "UPDATE usuario SET nome=?, email=?, cpf=?, telefone=?, senha=?, logradouro=?, numero_endereco=?, municipio=?, uf=?, data_hora_cadastro=? WHERE id=?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $usuario->getNome() ?? '');
-        $stmt->bindValue(2, $usuario->getCpf() ?? '');
-        $stmt->bindValue(3, $usuario->getTelefone() ?? '');
-        $stmt->bindValue(4, $usuario->getSenha() ?? '');
-        $stmt->bindValue(5, $usuario->getLogradouro() ?? '');
-        $stmt->bindValue(6, $usuario->getNumeroEndereco() ?? '');
-        $stmt->bindValue(7, $usuario->getMunicipio() ?? '');
-        $stmt->bindValue(8, $usuario->getUf() ?? '');
-        $stmt->bindValue(9, $usuario->getDataHoraCadastro() ?? '');
-        $stmt->bindValue(10, $usuario->getId() ?? '');
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
+        $stmt->bindValue(2, $usuario->getEmail() ?? '');
+        $stmt->bindValue(3, $usuario->getCpf() ?? '');
+        $stmt->bindValue(4, $usuario->getTelefone() ?? '');
+        $stmt->bindValue(5, $usuario->getSenha() ?? '');
+        $stmt->bindValue(6, $usuario->getLogradouro() ?? '');
+        $stmt->bindValue(7, $usuario->getNumeroEndereco() ?? '');
+        $stmt->bindValue(8, $usuario->getMunicipio() ?? '');
+        $stmt->bindValue(9, $usuario->getUf() ?? '');
+        $stmt->bindValue(10, $usuario->getDataHoraCadastro()->format('Y-m-d H:i:s') ?? '');
+        $stmt->bindValue(11, $usuario->getId() ?? '');
+        return $stmt->execute();
     }
 
     public function delete(int $id): bool{
@@ -75,5 +75,19 @@ class UsuarioDAO {
         $stmt->bindValue(1, $id);
         $stmt->execute();
         return $stmt->rowCount() > 0;
+    }
+    
+    private function mapUsuario(object $dados): Usuario{
+        $user = new Usuario($dados->email, $dados->nome);
+        $user->setId($dados->id);
+        $user->setCpf($dados->cpf ?? '');
+        $user->setTelefone($dados->telefone ?? '');
+        $user->setLogradouro($dados->logradouro ?? '');
+        $user->setNumeroEndereco($dados->numero_endereco ?? '');
+        $user->setMunicipio($dados->municipio ?? '');
+        $user->setUf($dados-> uf ?? '');
+        $user->setDataHoraCadastro(new \DateTimeImmutable($dados->data_hora_cadastro ?? ''));
+        return $user;
+
     }
 }

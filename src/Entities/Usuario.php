@@ -109,10 +109,10 @@ class Usuario extends Pessoa
         return $this;
     }
 
-    public function comprarPassagem(float $valor, Passageiro $passageiro, array $voos, CiaAerea $ciaAerea): Passagem
+    public function comprarPassagem(float $valor, Passageiro $passageiro, array $voos, CiaAerea $ciaAerea, \DateTimeInterface $dataSaida): Passagem
     {
 
-        $passagem = new Passagem($this, $valor, $passageiro, $ciaAerea);
+        $passagem = new Passagem($this, $valor, $passageiro, $ciaAerea, $dataSaida);
         foreach ($voos as $voo) {
             $trecho = new Trecho($voo, $passagem);
             $passagem->addTrecho($trecho);
