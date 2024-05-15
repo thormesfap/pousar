@@ -65,11 +65,7 @@ class AeronaveDAO {
         $sql = "DELETE FROM aeronave WHERE id=:id";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bindParam(':id', $id);
-        $request = $stmt->execute();
-        if($stmt->rowCount() == 0){
-            $message = $this->conexao->errorInfo();
-            var_dump($message);
-        }
+        $stmt->execute();
         return $stmt->rowCount() > 0;
     }
 

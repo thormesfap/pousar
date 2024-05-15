@@ -18,6 +18,7 @@ $aero = $aeroDAO->getById($data['aeronave']);
 $voo = new Voo($data['numero'], $data['cod_origem'], $data['cod_destino'], $aero, $cia);
 $voo->setHoraSaida($data['hora_saida']);
 $voo->setHoraChegada($data['hora_chegada']);
+$voo->setValor($data['valor']);
 
 if(isset($data['id']) && $data['id'] != ''){
     $voo->setId($data['id']);
